@@ -22,20 +22,110 @@ Jiawen Liu's Webpage
 	<h2>Huawei Technologies Co., Ltd.</h2>
 	<ul>
 		<li><strong>Role:</strong> Lead Engineer / Architect (Level 18) <br> <strong>Duration:</strong> June 2023 – present (3 years)</li>
-		<li><strong>Project 1 – DataAgent (Trustworthy AI Data Analysis Platform)</strong>
-			<ul>
-				<li><strong>Responsibilities:</strong> Overall system design, key technical breakthrough (POC) verification, project management, and team leadership.</li>
-				<li><strong>Key contributions:</strong> Built a code-based modeling platform that mitigates LLM hallucinations via formalizable data pipelines; enabled reliable AI‑driven data analytics for enterprise scenarios.</li>
-				<li><strong>Outcomes:</strong> 18 filed/granted patents (2023–2026) covering hallucination suppression, adaptive noise calibration, and verifiable data analysis.</li>
-			</ul>
-		</li>
-		<li><strong>Project 2 – OpenFuyao (Ascend NPU Ecosystem)</strong>
-			<ul>
-				<li><strong>Role:</strong> Co-lead of inference acceleration toolkit for LLMs on NPU.</li>
-				<li><strong>Contributions:</strong> Designed and optimized NPU‑aware operator libraries and memory scheduling; integrated the toolkit with mainstream LLM frameworks; achieved significant latency reduction for large‑scale deployment.</li>
-				<li><strong>Impact:</strong> Core contributor to Huawei’s Ascend computing ecosystem, enabling efficient LLM inference on domestic AI accelerators.</li>
-			</ul>
-		</li>
+		<li><strong>项目一 – ChatBI（可信智能问数分析平台）</strong>
+    <ul>
+        <li><strong>职责：</strong>主导ChatBI业务需求分析与AI特性洞察，负责系统方案设计、核心算法攻关及产品交付保障。</li>
+        <li><strong>核心贡献：</strong>突破基于中间表示（IR）的生成-验证-迭代循环代码生成技术，构建多维度验证与优化器机制，实现大模型概率性输出向确定性结果的转化；设计结构化问数意图处理体系，涵盖意图校验与澄清、拒答引导、查询改写等能力；通过语义层IR设计与代码化表列建模，结合验证器校验保障生成确定性；构建OmniGuard全表/全列/取值/泛化全覆盖测试体系（1w+用例）及五层分级评测机制，支撑2000+用例/天的快速迭代。
+        </li>
+        <li><strong>成果：</strong>从零到一构建ChatBI智能问数与报告能力，在iMaster NCE三个子域产品（HBB Master、传送NOE Mate、SPN NOE
+            Mate）2026.06版本中转测准确率达92%；企业园区iMaster NeoSight产品达90%+准确率并成功批量商用发布。</li>
+        <li><strong>项目背景：</strong>企业、2C（iMaster
+            Cloud、CI）、运营商（IP），运维场景，专业/非专业运维人员的突发&例行检查，需要场景特有、临时多变的数据查询和分析，手动导出数据步骤繁琐且操作复杂，亟需零门槛数据查询和分析能力，因而需要构建基于自然语言交互的精准数据查询和智能图表展示能力。该能力的构建核心主要解决三个关键技术挑战：1）如何在免增训/免微调的情况下基于LLM通用能力理解领域术语和意图；2）如何生成复杂代码；3）如何将大模型的概率性输出转化为确定性结果；实现有限表列空间内（200+）基于自然语言生成复杂查询语句高准确率低耗时（准确率>90%，E2E
+            平均 < 20s ）从而构建可信的BI竞争力。</li>
+    </ul>
+</li>
+<li><strong>项目二 – 大模型友好数据模型治理（TIG730）</strong>
+    <ul>
+        <li><strong>职责：</strong>担任系统工程师，负责技术洞察、规范制定及质量检视工具的设计实现。</li>
+        <li><strong>核心贡献：</strong>定义《公共开发部大模型友好数据模型设计规范》，涵盖33项质量规范；洞察、设计并实现33项规范自动化检视能力，基于大模型生成数据模型质量问题诊断与修改建议；从数据模型设计、编排、训练到运行态使用的全流程，建立大模型友好数据模型设计原则与规范体系，包含实体/属性/关系定义的正反例指导。
+        </li>
+        <li><strong>成果：</strong>发布产品线级数据模型规范，累计治理iMaster NCE三个子域、iMaster NeoSight、iMaster
+            Cloud、云核MAE-CN等产品500+张逻辑数据模型（表）及10000+数据模型属性（字段），支撑智能问数、SPN故障诊断、北向智能体、网络优化智能体等下游智能化业务，智能体准确率平均提升40%。</li>
+        <li><strong>项目背景：</strong>基部分基于大模型的智能体应用（Agent）依赖对底层数据库的操作，使用自然语通过Agent和系统数据进行交互时，数据的消费者从人转变为LLM，现有元数据（数据模型）（属性/关系/表/列）定义不清晰，结构不明确，导致大模型无法准确操作和使用系统数据。为了使各产品的元数据（表/字段）对大模型友好，便于LLM/AI
+            Agent理解数据模型含义，准确选择和正确使用元数据，因此需要对元数据进行层级和语义的治理，并制定统一的LLM友好的规范，用于指导和规范各产品元数据的设计和治理。关键挑战：（1）量化定义LLM可理解的元数据形态；（2）落实到人可操作的规范中，并工具化。
+        </li>
+    </ul>
+</li>
+<li><strong>项目三 – AI辅助代码检视（启明星3.0）</strong>
+    <ul>
+        <li><strong>职责：</strong>参与AI Committer代码检视专家系统方案设计和技术决策。</li>
+        <li><strong>核心贡献：</strong>提出结合数据驱动（大模型）与知识驱动（形式化验证）的融合检视方案，聚焦高频、严重代码缺陷的自动化检视；通过MR关联分析自动生成代码检视意见，辅助Committer高效完成代码评审。
+        </li>
+        <li><strong>成果：</strong>AI
+            Committer能力上线Codehub、Sophie平台并融入生产MR流程，覆盖50类高频及严重代码共性缺陷；检视意见在R25C10版本中被采纳1832次，采纳率达80%+，占该版本总检视意见的6.8%（1832/27500）。
+        </li>
+        <li><strong>项目背景：随着大模型技术的兴起，AI技术在辅助研发领域的能力产生了质变。项目围绕AI辅助研发赛道聚焦问题定位场景和代码检视场景，探索AI
+                Committer代码检视专家，使能研发效率提升。关键挑战：如何在代码检视环节提前效拦截TOP严重和TOP频发的现网问题。</strong></li>
+    </ul>
+</li>
+<li><strong>项目四 – OpenFuyao（昇腾 NPU 生态）</strong>
+    <ul>
+        <li><strong>角色：</strong>NPU 大模型推理加速工具包联合负责人。</li>
+        <li><strong>贡献：</strong>设计并优化 NPU 感知算子库与内存调度策略；将工具包集成至主流大模型框架；在大规模部署场景下实现显著的推理延迟降低。</li>
+        <li><strong>影响力：</strong>华为昇腾计算生态核心贡献者，推动国产 AI 加速器上的大模型高效推理。</li>
+    </ul>
+</li>
+
+<li><strong>Project 1 – ChatBI (Trustworthy Intelligent Data Query &amp; Analytics Platform)</strong>
+    <ul>
+        <li><strong>Responsibilities:</strong> Led business requirement analysis and AI capability exploration for
+            ChatBI; oversaw solution design, core algorithm breakthroughs, and product release assurance.</li>
+        <li><strong>Key Contributions:</strong> Pioneered an intermediate representation (IR) based
+            generate-verify-iterate code generation paradigm with multi-dimensional validation and optimizer mechanisms,
+            converting probabilistic LLM outputs into deterministic results; designed a structured intent processing
+            pipeline encompassing intent verification &amp; clarification, rejection guidance, and query rewriting;
+            ensured deterministic generation through semantic-layer IR design, code-based table/column modeling, and
+            validator checks; built OmniGuard – a comprehensive test suite with 10,000+ high-quality test cases covering
+            full-table, full-column, value, and generalization scenarios, coupled with a five-tier hierarchical
+            evaluation system, enabling rapid iteration at 2,000+ test cases per day.</li>
+        <li><strong>Outcomes:</strong> Built ChatBI's intelligent querying and reporting capabilities from ground zero;
+            achieved 92% accuracy in the 2026.06 release testing across three iMaster NCE sub-domain products (HBB
+            Master, Transport NOE Mate, SPN NOE Mate); enterprise campus iMaster NeoSight product achieved 90%+ accuracy
+            and was successfully commercially released.</li>
+    </ul>
+</li>
+<li><strong>Project 2 – LLM-Friendly Data Model Governance (TIG730)</strong>
+    <ul>
+        <li><strong>Responsibilities:</strong> Served as System Engineer, leading technology insight research,
+            specification definition, and quality inspection tool design &amp; implementation.</li>
+        <li><strong>Key Contributions:</strong> Defined the "LLM-Friendly Data Model Design Specification" for the
+            Public Development Department, covering 33 quality rules; designed and implemented automated inspection
+            capabilities for all 33 rules, leveraging LLMs to diagnose data model quality issues and provide actionable
+            recommendations; established a comprehensive set of design principles and specification systems for
+            LLM-friendly data models across the full lifecycle – from design, orchestration, and training to runtime
+            usage – including best-practice guidelines and positive/negative examples for entity, attribute, and
+            relationship definitions.</li>
+        <li><strong>Outcomes:</strong> Released a product-line-level data model specification; cumulatively governed
+            500+ logical data models (tables) and 10,000+ data model attributes (fields) across iMaster NCE's three
+            sub-domains, iMaster NeoSight, iMaster Cloud, and CloudCore MAE-CN products; drove an average 40% accuracy
+            improvement across downstream intelligent applications including ChatBI, SPN fault diagnosis, northbound
+            agent, and network optimization agent.</li>
+    </ul>
+</li>
+<li><strong>Project 3 – AI-Assisted Code Review (Venus 3.0)</strong>
+    <ul>
+        <li><strong>Responsibilities:</strong> Contributed to the design and technical decision-making of the AI
+            Committer code review expert system.</li>
+        <li><strong>Key Contributions:</strong> Proposed a hybrid review framework integrating data-driven (LLM) and
+            knowledge-driven (formal verification) approaches, focusing on automated detection of high-frequency and
+            critical code defects; enabled automatic generation of code review comments through MR association analysis
+            to assist committers in efficient code inspection.</li>
+        <li><strong>Outcomes:</strong> Deployed AI Committer capabilities on Codehub and Sophie platforms, integrated
+            into production MR workflows, covering 50 categories of high-frequency and critical code defect patterns;
+            review comments were adopted 1,832 times in the R25C10 release with an 80%+ adoption rate, accounting for
+            6.8% of total review comments (1,832/27,500) in that release.</li>
+    </ul>
+</li>
+<li><strong>Project 4 – OpenFuyao (Ascend NPU Ecosystem)</strong>
+    <ul>
+        <li><strong>Role:</strong> Co-lead of inference acceleration toolkit for LLMs on NPU.</li>
+        <li><strong>Contributions:</strong> Designed and optimized NPU‑aware operator libraries and memory scheduling;
+            integrated the toolkit with mainstream LLM frameworks; achieved significant latency reduction for
+            large‑scale deployment.</li>
+        <li><strong>Impact:</strong> Core contributor to Huawei’s Ascend computing ecosystem, enabling efficient LLM
+            inference on domestic AI accelerators.</li>
+    </ul>
+</li>
 	</ul>
 
 <h1>Academic Activity</h1>
