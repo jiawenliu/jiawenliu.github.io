@@ -1,6 +1,4 @@
-已根据个人主页信息整理；页面中部分商业产品/子域名以 “xxx” 脱敏，以下保留该写法。
-
-# 刘嘉文（Jiawen Liu）
+# 刘佳文（Jiawen Liu）
 
 ## 中文简历
 
@@ -27,8 +25,8 @@
 2016.09 – 2017.06  
 
 ### 工作经历
-**华为技术有限公司（Huawei Technologies Co., Ltd.）** — Lead Engineer / Architect  
-2023.06 – 至今（DataAgent & OpenFuyao 方向；页面职级表述含 Level 18/19 体系）
+**华为技术有限公司（Huawei Technologies Co., Ltd.）** — CTO办公室  
+2023.06 – 至今（Agent Harness & AI Infra 方向；页面职级表述含 Level 18/19 体系）
 
 - **ChatBI：可信智能问数分析平台**  
   - 主导业务需求分析、AI 特性洞察、系统方案设计、核心算法攻关与产品交付保障。  
