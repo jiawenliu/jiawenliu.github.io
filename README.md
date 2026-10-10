@@ -26,7 +26,7 @@
 
 ### 工作经历
 **华为技术有限公司（Huawei Technologies Co., Ltd.）** — CTO办公室  
-2023.06 – 至今（Agent Harness & AI Infra 方向；页面职级表述含 Level 18/19 体系）
+2023.06 – 至今（Agent Harness & AI Infra 方向；职级Level 20/19）
 
 - **ChatBI：可信智能问数分析平台**  
   - 主导业务需求分析、AI 特性洞察、系统方案设计、核心算法攻关与产品交付保障。  
@@ -126,7 +126,7 @@ Sep. 2013 – Jun. 2017
 Sep. 2016 – Jun. 2017  
 
 ### Work Experience
-**Huawei Technologies Co., Ltd.** — Lead Engineer / Architect  
+**Huawei Technologies Co., Ltd.** — Architect  20/19
 Jun. 2023 – Present; DataAgent & OpenFuyao directions  
 
 - **ChatBI: Trustworthy Intelligent Data Query & Analytics Platform**  
