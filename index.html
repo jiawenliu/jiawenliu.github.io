@@ -1,262 +1,633 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html xmlns="http://www.w3.org/1999/xhtml"> 
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-<meta http-equiv="Content-Type" content="text/html"; charset="utf-8">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<meta http-equiv="Content-Script-Type" content="text/javascript">
-<title>
-Jiawen Liu's Webpage
-</title>
-<link rel="stylesheet" href="css/style.css" >
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jiawen Liu · 简历 / Resume</title>
+<style>
+  :root{
+    --accent:#2b5ad0;
+    --accent-soft:#e8efff;
+    --ink:#16233a;
+    --muted:#5d6b80;
+    --bg:#eef2f8;
+    --card:#ffffff;
+    --line:#e3e9f2;
+    --ok:#0e8a5f;
+    --ok-soft:#f0faf5;
+    --warn:#b45309;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px;
+  }
+  .container{max-width:1060px;margin:0 auto;padding:0 22px}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:linear-gradient(135deg,#0e1a38 0%,#1e3a8a 58%,#2b5ad0 100%);
+    color:#fff;padding:58px 0 42px;
+  }
+  .hero h1{font-size:46px;letter-spacing:1.5px;line-height:1.15}
+  .hero .role{margin-top:8px;font-size:18px;color:#c7d6ff}
+  .hero .contact{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+  .chip{
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);
+    padding:5px 14px;border-radius:999px;font-size:13.5px;color:#e6edff;
+  }
+  .chip a{color:#e6edff;text-decoration:none}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px}
+  .stat{
+    background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.22);
+    border-radius:14px;padding:14px 16px;backdrop-filter:blur(3px);
+  }
+  .stat b{display:block;font-size:27px;line-height:1.25;color:#fff}
+  .stat span{font-size:12.5px;color:#c7d6ff}
+
+  /* ---------- Nav ---------- */
+  .toc{
+    position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);
+  }
+  .toc .container{display:flex;flex-wrap:wrap;gap:4px 2px;overflow-x:auto}
+  .toc a{
+    text-decoration:none;color:var(--muted);font-size:13.5px;font-weight:600;
+    padding:12px 14px;white-space:nowrap;border-bottom:2px solid transparent;
+  }
+  .toc a:hover,.toc a.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+  /* ---------- Sections ---------- */
+  section{padding:34px 0 6px}
+  .sec-title{
+    display:flex;align-items:center;gap:12px;
+    font-size:21px;font-weight:800;letter-spacing:.5px;margin-bottom:20px;
+  }
+  .sec-title::before{content:"";width:6px;height:24px;border-radius:3px;background:linear-gradient(180deg,var(--accent),#38bdf8)}
+  .sec-sub{color:var(--muted);font-size:13px;margin:-12px 0 18px 18px}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 28px;margin-bottom:16px;box-shadow:0 1px 3px rgba(16,35,76,.05)}
+
+  /* ---------- Project cards ---------- */
+  .project{
+    background:var(--card);border:1px solid var(--line);border-left:5px solid var(--accent);
+    border-radius:14px;padding:22px 26px;margin-bottom:18px;box-shadow:0 1px 3px rgba(16,35,76,.05);
+  }
+  .project .head{display:flex;align-items:flex-start;gap:14px}
+  .p-num{
+    flex:0 0 44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--accent),#38bdf8);color:#fff;font-weight:800;font-size:16px;
+  }
+  .p-title h3{font-size:19px;line-height:1.35}
+  .p-title .p-role{color:var(--muted);font-size:13.5px;margin-top:2px}
+  .p-title .p-meta{color:var(--accent);font-size:12.5px;font-weight:700;margin-top:5px}
+  .p-badges{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+  .badge{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap}
+  .badge-new{background:#0e8a5f;color:#fff}
+  .badge-core{background:#fef3c7;color:#92400e;border:1px solid #fcd34d}
+  .project ul{margin:14px 0 0 22px}
+  .project li{margin:7px 0;font-size:14.5px}
+  .project li>ul{margin:6px 0 2px 20px}
+  .tech{
+    background:var(--accent-soft);color:#2456c4;border-radius:6px;padding:1px 8px;
+    font-size:12.5px;font-weight:700;white-space:nowrap;
+  }
+  .code{font-family:Consolas,"Courier New",monospace;background:#eef2f8;border-radius:5px;padding:1px 6px;font-size:13px}
+  .outcome{
+    background:var(--ok-soft);border:1px solid #c9ecdb;border-left:4px solid var(--ok);
+    border-radius:10px;padding:12px 16px;margin-top:14px;font-size:14px;
+  }
+  .outcome b{color:var(--ok)}
+  details.bg{margin-top:12px;font-size:13.5px}
+  details.bg summary{cursor:pointer;color:var(--accent);font-weight:700;font-size:13px;user-select:none}
+  details.bg p{margin-top:8px;color:var(--muted)}
+
+  /* ---------- Patents ---------- */
+  .patents{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 18px}
+  .patent{
+    display:flex;gap:10px;font-size:13.5px;padding:9px 12px;
+    border:1px solid var(--line);border-radius:9px;background:#fafcff;align-items:baseline;
+  }
+  .patent .no{color:var(--accent);font-weight:800;white-space:nowrap;font-size:12px}
+
+  /* ---------- Academic ---------- */
+  .pub{border-left:3px solid var(--accent);padding:6px 0 6px 16px;margin:12px 0}
+  .pub .where{color:var(--muted);font-size:13.5px}
+  .ac-line{margin:8px 0;font-size:14.5px}
+  .ac-line .yr{color:var(--accent);font-weight:700;margin-right:8px}
+
+  /* ---------- Timeline (CV) ---------- */
+  .timeline{position:relative;padding-left:28px}
+  .timeline::before{content:"";position:absolute;left:9px;top:8px;bottom:8px;width:2px;background:var(--line)}
+  .tl-item{position:relative;margin-bottom:18px;font-size:14.5px}
+  .tl-item::before{
+    content:"";position:absolute;left:-25px;top:9px;width:11px;height:11px;border-radius:50%;
+    background:#fff;border:3px solid var(--accent);
+  }
+  .tl-item .tl-year{display:inline-block;font-weight:800;color:var(--accent);min-width:190px}
+
+  /* ---------- EN accordion ---------- */
+  details.en-block{
+    border:1px dashed var(--line);border-radius:12px;padding:14px 18px;margin-bottom:18px;background:#fafcff;
+  }
+  details.en-block>summary{
+    cursor:pointer;font-weight:800;color:var(--accent);font-size:14px;user-select:none;list-style:none;
+  }
+  details.en-block>summary::before{content:"▸ ";color:var(--muted)}
+  details.en-block[open]>summary::before{content:"▾ "}
+  .en-block .project{border-left-color:#7c9aef;margin-top:16px}
+
+  /* ---------- Footer ---------- */
+  footer{
+    background:#0e1a38;color:#b9c6e8;margin-top:30px;padding:34px 0;font-size:13.5px;
+  }
+  footer .links{display:flex;flex-wrap:wrap;gap:8px 22px;margin-bottom:12px}
+  footer a{color:#e6edff;text-decoration:none}
+  footer a:hover{text-decoration:underline}
+
+  /* ---------- Floating toolbar ---------- */
+  .toolbar{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:60}
+  .toolbar button{
+    border:0;cursor:pointer;font-size:13px;font-weight:700;color:#fff;padding:9px 16px;border-radius:999px;
+    background:linear-gradient(135deg,var(--accent),#38bdf8);box-shadow:0 6px 18px rgba(30,58,138,.35);
+    font-family:inherit;
+  }
+  .toolbar button.secondary{background:rgba(22,35,58,.85);box-shadow:0 6px 18px rgba(16,35,76,.25)}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:760px){
+    .hero h1{font-size:34px}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .patents{grid-template-columns:1fr}
+    .project .head{flex-wrap:wrap}
+    .p-badges{margin-left:0;width:100%}
+    .tl-item .tl-year{display:block}
+  }
+
+  /* ---------- Print ---------- */
+  @media print{
+    body{background:#fff;font-size:12px}
+    .hero{background:#fff;color:#000;padding:10px 0}
+    .hero h1{color:#000}
+    .hero .role,.hero .chip{color:#333}
+    .chip{background:#f2f2f2;border-color:#ddd;color:#333}
+    .chip a{color:#333}
+    .stat{background:#f5f5f5;border-color:#ddd}
+    .stat b{color:#000}.stat span{color:#555}
+    .toc,.toolbar,details.bg,.no-print{display:none!important}
+    details.en-block{border-style:solid;break-before:page}
+    .project,.card{border-color:#ccc;box-shadow:none;break-inside:avoid}
+    .outcome{background:#f7fbf8;border-color:#ccc}
+    a{color:#000;text-decoration:none}
+  }
+</style>
 </head>
 <body>
 
-<div id="pagebody">
-<div id ="header">
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="container">
+    <h1>Jiawen Liu</h1>
+    <p class="role">Lead Engineer / Architect · Huawei Technologies Co., Ltd.（Level 20/19）· 2023.06 – 至今</p>
+    <div class="contact">
+      <span class="chip">✉ jiawenl [at] bu.edu</span>
+      <span class="chip">☎ +86 19200349925</span>
+      <span class="chip"><a href="https://github.com/jiawenliu" target="_blank">GitHub ↗</a></span>
+      <span class="chip"><a href="https://jiawenliu.github.io" target="_blank">个人主页 ↗</a></span>
+      <span class="chip">🎓 Ph.D. @ Boston University（PLDI 2023）</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>800+</b><span>沙箱启动/销毁迭代 · 每小时（Agent Infra）</span></div>
+      <div class="stat"><b>92%</b><span>ChatBI 2026.06 转测准确率</span></div>
+      <div class="stat"><b>20</b><span>项专利（LLM 调优 / KVCache 加速等）</span></div>
+      <div class="stat"><b>PLDI 2023</b><span>一作论文（编程语言顶级会议）</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ NAV ============ -->
+<nav class="toc no-print">
+  <div class="container">
+    <a href="#interests">研究方向</a>
+    <a href="#work">工作经历（中文）</a>
+    <a href="#projects-en">Projects (EN)</a>
+    <a href="#patents">专利</a>
+    <a href="#academic">学术</a>
+    <a href="#cv">履历</a>
+    <a href="#contact">联系方式</a>
+  </div>
+</nav>
+
+<main class="container">
+
+  <!-- ============ RESEARCH INTEREST ============ -->
+  <section id="interests">
+    <h2 class="sec-title">研究方向 · Research Interest</h2>
+    <div class="card">
+      <ul style="margin-left:22px">
+        <li>Programming Language and Type Systems</li>
+        <li>Formal Verifications</li>
+        <li>Trustworthy AI &amp; LLM Hallucination Mitigation</li>
+        <li>Differential Privacy</li>
+        <li>AI Infra · 大模型推理加速（CPU / NPU 异构）</li>
+      </ul>
+      <p style="margin-top:14px;color:var(--muted);font-size:14px">I have been working on topics:
+        <ol style="margin:8px 0 0 22px">
+          <li>A programming language with a probabilistic type system for adaptive programs, using type information to guarantee confidence intervals on outputs. <a href="https://github.com/jiawenliu/AdaptivityAnalysis" target="_blank">Github</a></li>
+          <li>An automatic formal verification tool for differentially private algorithms implemented in floating point computation. <a href="https://github.com/jiawenliu/verifyingDPinFloatingPoint" target="_blank">Github</a></li>
+        </ol>
+      </p>
+      <p style="margin-top:12px;font-size:14px">
+        <strong>PhD Thesis:</strong>
+        <a href="https://github.com/jiawenliu/PhD/blob/main/CS/FinalDefense/submissions/Thesis-JiawenLiu.pdf" target="_blank">QUANTITATIVE Types for QUANTITATIVE-REACHABILITY PROPERTIES</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ WORK EXPERIENCE (中文) ============ -->
+  <section id="work">
+    <h2 class="sec-title">工作经历 · Work Experience</h2>
+    <p class="sec-sub">Huawei Technologies Co., Ltd. · 项目按时间倒排（最新在最上）· 中英双语</p>
+
+    <!-- 项目一 -->
+    <div class="project" id="p1">
+      <div class="head">
+        <div class="p-num">01</div>
+        <div class="p-title">
+          <h3>Agent Infra（RSI 智能体自迭代基础设施）</h3>
+          <div class="p-role">Agent Infra 核心负责人之一 · 架构设计与核心实现</div>
+          <div class="p-meta">📅 2026.09 – Now · 职级 20/19 · ICT-公共开发部 CTO 办公室</div>
+        </div>
+        <div class="p-badges"><span class="badge badge-new">NEW · 新增项目</span></div>
+      </div>
+      <ul>
+        <li>设计并构建 RSI（Recursive Self-Improvement）智能体自迭代基础设施，支撑智能体「生成-执行-评估-改进」闭环的大规模并行迭代；</li>
+        <li>构建高吞吐沙箱编排与生命周期管理体系，覆盖沙箱创建/启动/销毁/快照/恢复的全流程调度，实现资源池化与并行复用；</li>
+        <li>优化沙箱启动热路径（镜像分层、懒加载、预热缓存、并发销毁回收），消除启动/销毁的串行瓶颈。</li>
+      </ul>
+      <div class="outcome"><b>成果：</b>达成公司效果目标，沙箱启动-销毁迭代吞吐最快达 <b>800+ 次/小时</b>，为智能体训练与评测提供业界领先的迭代速度。</div>
+      <details class="bg">
+        <summary>项目背景</summary>
+        <p>智能体大规模自迭代（RSI）依赖「沙箱内执行-结果评估-策略改进」的密集迭代循环，沙箱创建/销毁速度直接决定迭代吞吐。传统逐次创建-销毁的沙箱管理方式启动开销大、串行化严重，成为 Agent 训练与评测规模化的瓶颈，亟需高吞吐的沙箱生命周期基础设施。</p>
+      </details>
+    </div>
+
+    <!-- 项目二 -->
+    <div class="project" id="p2">
+      <div class="head">
+        <div class="p-num">02</div>
+        <div class="p-title">
+          <h3>CPU 侧 LLM 推理优化加速（AI Infra）</h3>
+          <div class="p-role">AI Infra 大模型推理优化负责人之一 · 鲲鹏（ARM）CPU + 昇腾 NPU 异构栈 vLLM 链路</div>
+          <div class="p-meta">📅 2026.06 – Now · 职级 20/19 · ICT-公共开发部-推理加速业务组</div>
+        </div>
+        <div class="p-badges"><span class="badge badge-new">NEW · 新增项目</span></div>
+      </div>
+      <ul>
+        <li><span class="tech">SchedZero</span> — ARM-GIL-Aware 调度热路径消减与 NUMA-KV 亲和调度：消减 ARM 侧 GIL 感知调度热路径开销；KV Cache 按 NUMA 亲和分配，使 decode 每步调度与访存局部化，消除跨节点 KV 访问延迟。</li>
+        <li><span class="tech">ArchRoute-JIT</span> — 鲲鹏微架构感知的算子路由与 JIT-BRGEMM 特化选择：将算子选择从「矩阵形状 + dtype」静态查表升级为「指令集能力 + NUMA 亲和 + Cache 层级」的运行时微架构感知路由，使 INT8 GEMM 自动落到支持 i8mm 的鲲鹏 920B/950 特化内核，避免 ONNX Runtime 在 ARM 上回退到非 ACL 的 <span class="code">CPUExecutionProvider</span> 低效路径。</li>
+        <li><span class="tech">GraphPipeline-UB</span> — CPU-Graph 异步流水线与 UB 通算融合的零气泡下发：将 CPU 控制面（调度→元数据→图查找→下发）与加速器计算面解耦为异步流水线，以整图 O(1) launch 替代 eager 回退逐算子 O(n) launch，规避 ARM sched_yield 等待异常与远端 NUMA 图缓存读取，实现 decode 每步零气泡下发。</li>
+        <li><span class="tech">CompileLocal-NUMA</span> — NUMA-Local 预编译产物亲和缓存与启动期微基准快速搜索（详见项目三）。</li>
+      </ul>
+      <div class="outcome"><b>成果：</b>在鲲鹏 + 昇腾大模型推理场景实现 decode 吞吐与首 token 延迟的系统性优化，沉淀可复用的 CPU 侧推理优化方法论。</div>
+      <details class="bg">
+        <summary>项目背景</summary>
+        <p>CPU 侧 vLLM/ONNX Runtime 的算子选择仅按「形状 + dtype」静态匹配，同一形状 GEMM 在支持 i8mm 的鲲鹏 920B/950 与早期 920 上走同一条通用 NEON 路径，i8mm 吞吐优势未被利用；图下发存在 CPU 控制面与计算面的串行耦合，串行窗口宽度直接决定 decode 每步「气泡」；ARM sched_yield 问题、远端 NUMA 图缓存、eager 回退 O(n) launch 进一步放大开销。</p>
+      </details>
+    </div>
+
+    <!-- 项目三 -->
+    <div class="project" id="p3">
+      <div class="head">
+        <div class="p-num">03</div>
+        <div class="p-title">
+          <h3>CPU 图编译加速（重点开发项目）</h3>
+          <div class="p-role">重点开发负责人 · 主导 CompileLocal-NUMA 体系从方案设计、代码实现到交付落地</div>
+          <div class="p-meta">📅 2026.06 – Now · 职级 20/19 · ICT-公共开发部-推理加速业务组</div>
+        </div>
+        <div class="p-badges"><span class="badge badge-new">NEW · 重点开发</span></div>
+      </div>
+      <ul>
+        <li><b>预编译产物 NUMA-local 分配：</b>通过 <span class="code">mbind / numa_alloc_local</span> 将融合算子二进制、常量折叠权重布局、slot mapping 模板等预编译产物（数十 MB～数百 MB）常驻分配在 worker 绑定的本地 NUMA 节点/大页并生命周期内不迁移，消除首次 forward 的跨节点加载（远端带宽约本地 1/3、延迟 2–3 倍）。</li>
+        <li><b>JIT 缓存按 NUMA 节点分片：</b>将 KDNN JIT 缓存目录从全局单例改为 <span class="code">CACHE_ROOT/numa_N/</span> 分片，各 NUMA 进程/DP rank 只读写本地分片并按节点独立淘汰，消除高核数下多进程并发编译的文件锁/内存锁竞争。</li>
+        <li><b>启动期「快速搜索」替代黑盒 autotuning：</b>仅对典型 shape 桶（prefill [1k, 4k, 8k, 16k]、decode [1, 2, 4, 8, 16, 32]）做一次性微基准标定生成决策表，非典型 shape 由 JIT 按需生成并缓存，将启动期搜索空间从「全 shape」压缩到「桶边界 shape」。</li>
+        <li><b>图产物 NUMA-local 预取：</b>服务进入就绪前通过 <span class="code">madvise(MADV_WILLNEED)</span> / 访问预热 prefault 预编译产物到本地，消除首次 forward 触发的 demand paging 与跨节点加载长尾。</li>
+        <li><b>V4 Hash-MoE 常量折叠联动：</b>将 V4 前 3 层冻结路由在图中完全常量折叠，消除 3/43 层路由相关的 JIT/autotuning 开销；针对 Grouped Output Projection 的分组低秩形状，按组大小分布设计 shape 桶。</li>
+      </ul>
+      <div class="outcome"><b>成果（预估）：</b>冷启动到就绪时间预计缩短 <b>15–30%</b>；启动期图编译/搜索阶段绝对时间预计压缩 <b>20–40%</b>（基于微架构比例的定性估计，通过启动时间分解 profile 收敛）。交付件：NUMA-local 预编译分配 patch、KDNN JIT 缓存分片 patch、桶边界标定脚本与决策表、启动时间分解 profile 报告、V4 Hash-MoE 常量折叠融合 pass。</div>
+      <details class="bg">
+        <summary>项目背景</summary>
+        <p>图预编译产物若被分配在远端 NUMA 节点、或 JIT 缓存被多 NUMA 进程全局争用，服务热起来后的首次 forward 会反复触发跨节点加载与缓存锁竞争，「一次性开销」形成长尾：冷启动时间被拉长的同时热路径首次访问也受污染。鲲鹏+昇腾场景图编译与算子融合阶段约 80 秒（Dynamo 20s + CANN 48s + warm-up），整个启动链 4–5 分钟，弹性扩缩容时该长尾直接影响新实例就绪时间。</p>
+      </details>
+    </div>
+
+    <!-- 项目四 -->
+    <div class="project" id="p4">
+      <div class="head">
+        <div class="p-num">04</div>
+        <div class="p-title">
+          <h3>OpenFuyao（昇腾 NPU 生态）</h3>
+          <div class="p-role">NPU 大模型推理加速工具包联合负责人</div>
+          <div class="p-meta">📅 2026.03 – 2026.09 · 职级 18 · ICT-公共开发部-推理加速业务组</div>
+        </div>
+        <div class="p-badges"><span class="badge badge-core">核心项目</span></div>
+      </div>
+      <ul>
+        <li>设计并优化 NPU 感知算子库与内存调度策略；将工具包集成至主流大模型框架；在大规模部署场景下实现显著的推理延迟降低。</li>
+        <li>华为昇腾计算生态核心贡献者，推动国产 AI 加速器上的大模型高效推理。</li>
+      </ul>
+      <div class="outcome"><b>成果：</b>社区发布提案 / PR <b>10+</b>；DSH layerwise 推理优化方案在<b>蚂蚁客户集群</b>完成落地部署（12 节点 / 192 卡），32k/64k/128k 评测场景下 <b>TTFT 平均优化 18.2%</b>、TPOT 达 <b>18ms</b>、TPS 提升 <b>6.4%</b>；Agentic Infra 商品迭代 <b>30+ 版本</b>、累计用户 <b>80+</b>。</div>
+    </div>
+
+    <!-- 项目五 -->
+    <div class="project" id="p5">
+      <div class="head">
+        <div class="p-num">05</div>
+        <div class="p-title">
+          <h3>ChatBI（可信智能问数分析平台）</h3>
+          <div class="p-role">主导业务需求分析与 AI 特性洞察 · 系统方案设计、核心算法攻关、产品交付保障</div>
+          <div class="p-meta">📅 2025.01 – 2026.06 · 职级 18 · ICT-公共开发部-智能数据业务组</div>
+        </div>
+      </div>
+      <ul>
+        <li>突破基于中间表示（IR）的生成-验证-迭代循环代码生成技术，构建多维度验证与优化器机制，实现大模型概率性输出向确定性结果的转化；</li>
+        <li>设计结构化问数意图处理体系（意图校验与澄清、拒答引导、查询改写）；通过语义层 IR 设计与代码化表列建模，结合验证器校验保障生成确定性；</li>
+        <li>构建 OmniGuard 全表/全列/取值/泛化全覆盖测试体系（1w+ 用例）及五层分级评测机制，支撑 2000+ 用例/天的快速迭代。</li>
+      </ul>
+      <div class="outcome"><b>成果：</b>从零到一构建 ChatBI 智能问数与报告能力，2026.06 版本转测准确率达 <b>92%</b>；企业产品达 <b>90%+</b> 准确率并成功批量商用发布；<b>已持续商用 1 年</b>，累计企业用户 <b>500+</b>、累计使用次数 <b>77w+</b>；2026 年底上线<b>亚太非市场</b>，完成国外发布部署。</div>
+      <details class="bg">
+        <summary>项目背景</summary>
+        <p>企业、2C、运营商运维场景中，专业/非专业运维人员的突发&amp;例行检查需要场景特有、临时多变的数据查询和分析，亟需零门槛数据查询与分析能力。核心挑战：1）免增训/免微调情况下基于 LLM 通用能力理解领域术语和意图；2）生成复杂代码；3）将大模型概率性输出转化为确定性结果。实现在有限表列空间内（200+）基于自然语言生成复杂查询语句，准确率 &gt;90%、E2E 平均 &lt;20s。</p>
+      </details>
+    </div>
+
+    <!-- 项目六 -->
+    <div class="project" id="p6">
+      <div class="head">
+        <div class="p-num">06</div>
+        <div class="p-title">
+          <h3>大模型友好数据模型治理 <span style="color:var(--muted);font-size:13px">（简）</span></h3>
+          <div class="p-role">系统工程师 · 技术洞察、规范制定、质量检视工具设计实现</div>
+          <div class="p-meta">📅 2023.09 – 2024.12 · 职级 17 · ICT-公共开发部-管控析平台架构设计组</div>
+        </div>
+      </div>
+      <ul>
+        <li>定义《公共开发部大模型友好数据模型设计规范》（33 项质量规范）并实现 33 项规范自动化检视；</li>
+        <li>累计治理 500+ 张逻辑数据模型（表）及 10000+ 数据模型属性（字段），支撑 ChatBI、SPN 故障诊断、北向智能体、网络优化智能体等下游业务，智能体准确率平均提升 40%。</li>
+      </ul>
+    </div>
+
+    <!-- 项目七 -->
+    <div class="project" id="p7">
+      <div class="head">
+        <div class="p-num">07</div>
+        <div class="p-title">
+          <h3>AI 辅助代码检视 <span style="color:var(--muted);font-size:13px">（简）</span></h3>
+          <div class="p-role">参与 AI Committer 代码检视专家系统方案设计和技术决策</div>
+          <div class="p-meta">📅 2023.09 – 2024.12 · 职级 17 · ICT-公共开发部-管控析平台架构设计组</div>
+        </div>
+      </div>
+      <ul>
+        <li>提出数据驱动（大模型）与知识驱动（形式化验证）融合检视方案；</li>
+        <li>AI Committer 能力上线 Codehub、Sophie 平台并融入生产 MR 流程，覆盖 50 类高频及严重代码共性缺陷；R25C10 版本检视意见被采纳 1832 次，采纳率达 80%+（占该版本总检视意见 6.8%）。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ PROJECTS (EN) ============ -->
+  <section id="projects-en">
+    <h2 class="sec-title">Projects (English)</h2>
+    <details class="en-block">
+      <summary>展开 / 收起英文版项目经历（7 个项目）</summary>
+
+      <div class="project">
+        <div class="head">
+          <div class="p-num">01</div>
+          <div class="p-title"><h3>Agent Infra (RSI Self-Improvement Infrastructure)</h3>
+          <div class="p-role">Core lead of Agent Infra; architect and primary developer of the RSI platform.</div>
+          <div class="p-meta">📅 2026.09 – Now · Level 20/19 · ICT-Public Development Dept., CTO Office</div></div>
+          <div class="p-badges"><span class="badge badge-new">NEW</span></div>
+        </div>
+        <ul>
+          <li>Designed and built the RSI (Recursive Self-Improvement) agent infrastructure, supporting massively parallel "generate–execute–evaluate–improve" iteration loops for agents;</li>
+          <li>Built a high-throughput sandbox orchestration and lifecycle management system covering create/start/destroy/snapshot/recover with resource pooling and parallel reuse;</li>
+          <li>Optimized the sandbox startup hot path (image layering, lazy loading, warm caches, concurrent reclamation) to remove serial bottlenecks in create/destroy cycles.</li>
+        </ul>
+        <div class="outcome"><b>Outcomes:</b> Met the company's target; achieved up to <b>800+ sandbox create/destroy iterations per hour</b>, delivering industry-leading iteration speed for agent training and evaluation.</div>
+      </div>
+
+      <div class="project">
+        <div class="head">
+          <div class="p-num">02</div>
+          <div class="p-title"><h3>CPU-Side LLM Inference Optimization (AI Infra)</h3>
+          <div class="p-role">Lead of AI Infra LLM inference optimization on the Kunpeng (ARM) CPU + Ascend NPU heterogeneous stack (vLLM).</div>
+          <div class="p-meta">📅 2026.06 – Now · Level 20/19 · ICT-Public Development Dept., Inference Acceleration Group</div></div>
+          <div class="p-badges"><span class="badge badge-new">NEW</span></div>
+        </div>
+        <ul>
+          <li><span class="tech">SchedZero</span> – ARM-GIL-Aware scheduling hot-path reduction &amp; NUMA-KV affinity scheduling: slashes GIL-aware scheduling overhead on ARM and places KV cache with NUMA affinity, localizing per-step scheduling and memory access to remove cross-node KV access latency.</li>
+          <li><span class="tech">ArchRoute-JIT</span> – Kunpeng microarchitecture-aware operator routing with JIT-BRGEMM specialization: upgrades operator selection from static "shape + dtype" lookup to runtime microarchitecture-aware routing over instruction-set capability, NUMA affinity, and cache hierarchy, so INT8 GEMMs land on i8mm-specialized Kunpeng 920B/950 kernels instead of generic NEON, avoiding fallback to the non-ACL <span class="code">CPUExecutionProvider</span>.</li>
+          <li><span class="tech">GraphPipeline-UB</span> – CPU-Graph asynchronous pipelining with zero-bubble dispatch: decouples the CPU control plane (schedule → metadata → graph lookup → dispatch) from the accelerator compute plane; replaces per-operator O(n) eager launches with whole-graph O(1) launches, mitigating ARM sched_yield anomalies and remote-NUMA graph-cache reads.</li>
+          <li><span class="tech">CompileLocal-NUMA</span> – NUMA-local affinity caching of precompiled artifacts &amp; startup fast search (see Project 3).</li>
+        </ul>
+        <div class="outcome"><b>Outcomes:</b> Systematic improvements in decode throughput and time-to-first-token for LLM inference on Kunpeng + Ascend, plus a reusable CPU-side inference optimization methodology.</div>
+      </div>
+
+      <div class="project">
+        <div class="head">
+          <div class="p-num">03</div>
+          <div class="p-title"><h3>CPU Graph Compilation Acceleration (Key Development)</h3>
+          <div class="p-role">Lead developer of the CPU graph compilation acceleration (CompileLocal-NUMA) from design and implementation to delivery.</div>
+          <div class="p-meta">📅 2026.06 – Now · Level 20/19 · ICT-Public Development Dept., Inference Acceleration Group</div></div>
+          <div class="p-badges"><span class="badge badge-new">KEY</span></div>
+        </div>
+        <ul>
+          <li><b>NUMA-local allocation of precompiled artifacts:</b> uses <span class="code">mbind / numa_alloc_local</span> to pin fused-operator binaries, constant-folded weight layouts, and slot-mapping templates (tens to hundreds of MB) to the worker-bound local NUMA node / huge pages for their lifetime, eliminating cross-node loading on first forward (remote bandwidth ≈ 1/3 of local, latency 2–3×).</li>
+          <li><b>NUMA-sharded JIT caches:</b> changes the KDNN JIT cache from a global singleton to per-node <span class="code">CACHE_ROOT/numa_N/</span> shards, so each NUMA process / DP rank reads and writes only its local shard with independent eviction, removing lock contention among concurrent compilers on high-core-count systems.</li>
+          <li><b>Startup "fast search" instead of black-box autotuning:</b> calibrates only typical shape buckets once at startup (prefill [1k, 4k, 8k, 16k]; decode [1, 2, 4, 8, 16, 32]) to build a decision table; non-typical shapes are JIT-generated on demand and cached, compressing the startup search space from all shapes to bucket boundaries.</li>
+          <li><b>NUMA-local prefetch of graph artifacts:</b> prefaults precompiled artifacts into local memory (<span class="code">madvise(MADV_WILLNEED)</span> / access warming) before readiness, eliminating demand paging and cross-node loading on the first forward.</li>
+          <li><b>V4 Hash-MoE constant folding:</b> fully constant-folds the first 3 frozen routing layers of V4, removing their runtime routing decisions and JIT/autotuning needs (3/43 layers), and sizes shape buckets by the group-size distribution of Grouped Output Projection.</li>
+        </ul>
+        <div class="outcome"><b>Outcomes (estimated):</b> cold-start-to-ready time expected to drop <b>15–30%</b>; startup graph compilation/search time expected to compress <b>20–40%</b> (qualitative estimates based on microarchitectural ratios). Deliverables: NUMA-local allocation patch, JIT cache sharding patch, bucket-boundary calibration script + decision tables, startup time-breakdown profiling report, and a V4 Hash-MoE constant-folding fusion pass.</div>
+      </div>
+
+      <div class="project">
+        <div class="head">
+          <div class="p-num">04</div>
+          <div class="p-title"><h3>OpenFuyao (Ascend NPU Ecosystem)</h3>
+          <div class="p-role">Co-lead of inference acceleration toolkit for LLMs on NPU.</div>
+          <div class="p-meta">📅 2026.03 – 2026.09 · Level 18 · ICT-Public Development Dept., Inference Acceleration Group</div></div>
+          <div class="p-badges"><span class="badge badge-core">Core</span></div>
+        </div>
+        <ul>
+          <li>Designed and optimized NPU-aware operator libraries and memory scheduling; integrated the toolkit with mainstream LLM frameworks; achieved significant latency reduction for large-scale deployment.</li>
+          <li>Core contributor to Huawei's Ascend computing ecosystem, enabling efficient LLM inference on domestic AI accelerators.</li>
+        </ul>
+        <div class="outcome"><b>Outcomes:</b> <b>10+</b> proposals/PRs released to the open-source community; the DSH layerwise inference optimization was deployed on the <b>Ant Group customer cluster</b> (12 nodes / 192 cards), delivering <b>18.2% average TTFT improvement</b>, <b>18ms TPOT</b>, and <b>6.4% TPS improvement</b> across 32k/64k/128k evaluation scenarios; the Agentic Infra product iterated <b>30+ versions</b> with <b>80+</b> cumulative users.</div>
+      </div>
+
+      <div class="project">
+        <div class="head">
+          <div class="p-num">05</div>
+          <div class="p-title"><h3>ChatBI (Trustworthy Intelligent Data Query &amp; Analytics Platform)</h3>
+          <div class="p-role">Led business requirement analysis, solution design, core algorithm breakthroughs, and release assurance.</div>
+          <div class="p-meta">📅 2025.01 – 2026.06 · Level 18 · ICT-Public Development Dept., Intelligent Data Group</div></div>
+        </div>
+        <ul>
+          <li>Pioneered an IR-based generate-verify-iterate code generation paradigm with multi-dimensional validation and optimizer mechanisms, converting probabilistic LLM outputs into deterministic results;</li>
+          <li>Designed a structured intent processing pipeline (intent verification &amp; clarification, rejection guidance, query rewriting) with semantic-layer IR design and validator checks;</li>
+          <li>Built OmniGuard – 10,000+ test cases covering full-table, full-column, value, and generalization scenarios, with a five-tier evaluation system enabling 2,000+ test cases/day iteration.</li>
+        </ul>
+        <div class="outcome"><b>Outcomes:</b> Built ChatBI from ground zero; achieved <b>92%</b> accuracy in the 2026.06 release testing; enterprise products achieved <b>90%+</b> accuracy and were successfully commercially released; <b>operating commercially for 1 year</b> with <b>500+ enterprise users</b> and <b>770k+ cumulative queries</b>; scheduled to launch in <b>Asia-Pacific &amp; Africa markets</b> by end of 2026 for international deployment.</div>
+      </div>
+
+      <div class="project">
+        <div class="head">
+          <div class="p-num">06</div>
+          <div class="p-title"><h3>LLM-Friendly Data Model Governance <span style="color:var(--muted);font-size:13px">(Condensed)</span></h3>
+          <div class="p-role">System Engineer – technology insight, specification definition, quality inspection tooling.</div>
+          <div class="p-meta">📅 2023.09 – 2024.12 · Level 17 · ICT-Public Development Dept., Management/Control-Analysis Platform Architecture Design Group</div></div>
+        </div>
+        <ul>
+          <li>Defined the "LLM-Friendly Data Model Design Specification" (33 quality rules) with automated inspection for all 33 rules;</li>
+          <li>Governed 500+ logical data models and 10,000+ attributes, supporting ChatBI, SPN fault diagnosis, northbound agent, and network optimization agent, driving an average 40% accuracy improvement.</li>
+        </ul>
+      </div>
+
+      <div class="project">
+        <div class="head">
+          <div class="p-num">07</div>
+          <div class="p-title"><h3>AI-Assisted Code Review <span style="color:var(--muted);font-size:13px">(Condensed)</span></h3>
+          <div class="p-role">Contributed to the design and technical decisions of the AI Committer expert system.</div>
+          <div class="p-meta">📅 2023.09 – 2024.12 · Level 17 · ICT-Public Development Dept., Management/Control-Analysis Platform Architecture Design Group</div></div>
+        </div>
+        <ul>
+          <li>Proposed a hybrid review framework integrating data-driven (LLM) and knowledge-driven (formal verification) approaches;</li>
+          <li>Deployed AI Committer on Codehub and Sophie into production MR workflows, covering 50 categories of defect patterns; 1,832 comments adopted in R25C10 with an 80%+ adoption rate.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ PATENTS ============ -->
+  <section id="patents">
+    <h2 class="sec-title">专利发表 · Patents（20 篇）</h2>
+    <p class="sec-sub">涵盖 DSL 验证、LLM 调优、容器化升级、KVCache 加速等方向</p>
+    <div class="card">
+      <div class="patents">
+        <div class="patent"><span class="no">92050816</span><span>一种基于DSL的形式化验证代码生成技术</span></div>
+        <div class="patent"><span class="no">92052439</span><span>一种基于transformer架构的设备日志分析和故障自修复技术</span></div>
+        <div class="patent"><span class="no">92052589</span><span>一种基于自然语言解析的设备配置和规则生成和校验技术</span></div>
+        <div class="patent"><span class="no">92056719</span><span>一种基于LLM的智能潜客数据模型挖掘和动态调优技术</span></div>
+        <div class="patent"><span class="no">92073078</span><span>一种云服务容器化场景下基于lisenerfd迁移的原地服务升级技术</span></div>
+        <div class="patent"><span class="no">92073110</span><span>一种容器化场景下基于CSI标准的服务小型化发布、部署和更新技术</span></div>
+        <div class="patent"><span class="no">92073848</span><span>一种基于LLM和图像生成大模型的拓扑图联动扩展技术</span></div>
+        <div class="patent"><span class="no">92075449</span><span>一种基于分层隐式神经网络的前端网页代码生成技术</span></div>
+        <div class="patent"><span class="no">92075753</span><span>一种算网存多域融合故障分析和定位技术</span></div>
+        <div class="patent"><span class="no">92102802</span><span>一种基于KVCache Endpoint批量聚合的推理集群优化方法</span></div>
+        <div class="patent"><span class="no">92103073</span><span>基于KVCache智能混合传输策略的分布式集群推理计算加速方法</span></div>
+        <div class="patent"><span class="no">92103239</span><span>一种基于智能AST蓝图生成的重构数据模型的方法</span></div>
+        <div class="patent"><span class="no">92103727</span><span>一种智能体自适应指令规则和验证器自动注册方法与系统</span></div>
+        <div class="patent"><span class="no">92121622</span><span>稀疏模式感知的KVCache匹配优化技术</span></div>
+        <div class="patent"><span class="no">92056122</span><span>一种基于先验知识注入的模型调优方法</span></div>
+        <div class="patent"><span class="no">92078409</span><span>一种多模态融合的算网存故障分析技术</span></div>
+        <div class="patent"><span class="no">92078074</span><span>一种高效的基于资源实时监控的负载均衡调度备份恢复方法</span></div>
+        <div class="patent"><span class="no">92082072</span><span>一种多集群快速对接和融合管理的装置</span></div>
+        <div class="patent"><span class="no">92102967</span><span>一种基于Client端热点缓存的推理服务加速方法</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ACADEMIC ============ -->
+  <section id="academic">
+    <h2 class="sec-title">学术 · Academic Activity</h2>
+    <div class="card">
+      <h3 style="font-size:16px;margin-bottom:8px">Publications</h3>
+      <div class="pub">
+        <strong>Program Analysis for Adaptive Data Analysis</strong> with Marco Gaboardi.<br>
+        <span class="where">in <em>Proceedings of the 44th ACM SIGPLAN Conference on Programming Language Design and Implementation (PLDI 2023)</em>, Orlando, FL, USA.</span>
+      </div>
+      <h3 style="font-size:16px;margin:18px 0 8px">Patents</h3>
+      <p class="ac-line">18 filed/published patents (as of 2026) in intelligent data analysis, LLM hallucination mitigation, code-based modeling, and NPU acceleration.</p>
+      <h3 style="font-size:16px;margin:18px 0 8px">Talks / Posters</h3>
+      <p class="ac-line"><span class="yr">2019</span>Short talk – Type System in Adaptive Data Analysis – EGLPLS (Cornell University, NY, USA)</p>
+      <p class="ac-line"><span class="yr">2018</span>Poster – Tailoring Differentially Private Bayesian Inference to Distance Between Distributions – TPDP of CCS (Toronto, Canada)</p>
+      <h3 style="font-size:16px;margin:18px 0 8px">Teaching</h3>
+      <p class="ac-line">TA for CS 320 Concepts of Programming Languages (Boston University, 2019 Fall); CSE 305 Introduction to Programming Languages (UB, 2017–2019); CSE 542 Software Engineer Concept (UB, 2017 Fall)</p>
+    </div>
+  </section>
+
+  <!-- ============ CV TIMELINE ============ -->
+  <section id="cv">
+    <h2 class="sec-title">履历 · Curriculum Vitae</h2>
+    <div class="card">
+      <div class="timeline">
+        <div class="tl-item"><span class="tl-year">2023.06 – 至今</span><strong>Huawei Technologies Co., Ltd.</strong>（Level 18）Lead Engineer/Architect（Agent Infra / AI Infra / OpenFuyao）</div>
+        <div class="tl-item"><span class="tl-year">2019.09 – 2023.05</span>Ph.D. in Computer Science, Boston University. Advisor: Marco Gaboardi. Thesis on program analysis for adaptive data analysis (PLDI 2023).</div>
+        <div class="tl-item"><span class="tl-year">2017.09 – 2019.05</span>Ph.D. student in Computer Science and Engineering, University at Buffalo, SUNY. Advisor: Marco Gaboardi.</div>
+        <div class="tl-item"><span class="tl-year">2016.09 – 2017.06</span>Intern, Institute of Information Engineering, Chinese Academy of Sciences.</div>
+        <div class="tl-item"><span class="tl-year">2013.09 – 2017.06</span>B.A. in Information Science, Central University of Finance and Economics, Beijing.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact">
+    <h2 class="sec-title">联系方式 · Contact</h2>
+    <div class="card">
+      <p class="ac-line">✉ jiawenl [at] bu.edu ｜ ☎ +86 19200349925</p>
+      <p class="ac-line" style="margin-top:6px">
+        <a href="https://github.com/jiawenliu" target="_blank">GitHub</a> ｜
+        <a href="https://jiawenliu.github.io" target="_blank">Personal Homepage</a> ｜
+        <a href="https://cs-people.bu.edu/jiawenl/" target="_blank">Previous site @ BU</a> ｜
+        <a href="https://www.acsu.buffalo.edu/~jliu223/" target="_blank">Previous site @ UB</a>
+      </p>
+    </div>
+  </section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container">
+    <div class="links">
+      <span>Jiawen Liu · 简历演示版</span>
+      <span>·</span>
+      <a href="https://github.com/jiawenliu" target="_blank">GitHub</a>
+      <a href="https://jiawenliu.github.io" target="_blank">jiawenliu.github.io</a>
+    </div>
+    <div>Research Interest: Programming Languages · Formal Verification · Trustworthy AI · AI Infra</div>
+  </div>
+</footer>
+
+<!-- ============ FLOATING TOOLBAR ============ -->
+<div class="toolbar no-print">
+  <button onclick="toggleEN()">🌐 展开/收起英文版</button>
+  <button class="secondary" onclick="window.print()">🖨 打印 / 导出 PDF</button>
 </div>
-<!-- -->
-<h1>Jiawen Liu</h1>
-<a href="https://jiawenliu.github.io"><img src="profile_pic.jpg" height="242"></img></a>
-<div id ="Contents">
-<h1>Research Interest</h1>
-	<ul>
-		<li>Programming Language and Type Systems</li>
-		<li>Formal Verifications</li>
-		<li>Trustworthy AI & LLM Hallucination Mitigation</li>
-		<li>Differential Privacy</li>		
-	</ul>
-	<ul>	
-		I have been working on topics:
-		<ol>
-		<li> A programming language with a probalistic type system for adaptive programs, using type information to guarantee confidence intervals on outputs. <a href="https://github.com/jiawenliu/AdaptivityAnalysis">Github</a></li> 
-		<li> An automatic formal verification tool for differentially private algorithms implemented in floating point computation. <a href="https://github.com/jiawenliu/verifyingDPinFloatingPoint">Github</a></li> 
-		</ol>
-	</ul>
-	
-<h1> PhD Thesis </h1>
-	<ul>	
-		My PhD thesis, <a href="https://github.com/jiawenliu/PhD/blob/main/CS/FinalDefense/submissions/Thesis-JiawenLiu.pdf">QUANTITATIVE Types for QUANTITATIVE-REACHABILITY PROPERTIES</a>.
-	</ul>
-	
-<h1>Work Experience</h1>
-	<h2>Huawei Technologies Co., Ltd.</h2>
-	<ul>
-		<li><strong>Role:</strong> Lead Engineer / Architect (Level 20/19) <br> <strong>Duration:</strong> June 2023 – present (3 years)</li>
-		<li><strong>项目一 – ChatBI（可信智能问数分析平台）</strong>
-    <ul>
-        <li><strong>职责：</strong>主导ChatBI业务需求分析与AI特性洞察，负责系统方案设计、核心算法攻关及产品交付保障。</li>
-        <li><strong>核心贡献：</strong>突破基于中间表示（IR）的生成-验证-迭代循环代码生成技术，构建多维度验证与优化器机制，实现大模型概率性输出向确定性结果的转化；设计结构化问数意图处理体系，涵盖意图校验与澄清、拒答引导、查询改写等能力；通过语义层IR设计与代码化表列建模，结合验证器校验保障生成确定性；构建OmniGuard全表/全列/取值/泛化全覆盖测试体系（1w+用例）及五层分级评测机制，支撑2000+用例/天的快速迭代。
-        </li>
-        <li><strong>成果：</strong>从零到一构建ChatBI智能问数与报告能力，在xxx、xxx、xxx三个子域产品（xxx、xxx、xxx）2026.06版本中转测准确率达92%；企业xxx、xxx、xxx产品达90%+准确率并成功批量商用发布。</li>
-        <li><strong>项目背景：</strong>企业、2C（xxx、xxx、xxx）、运营商，运维场景，专业/非专业运维人员的突发&例行检查，需要场景特有、临时多变的数据查询和分析，手动导出数据步骤繁琐且操作复杂，亟需零门槛数据查询和分析能力，因而需要构建基于自然语言交互的精准数据查询和智能图表展示能力。该能力的构建核心主要解决三个关键技术挑战：1）如何在免增训/免微调的情况下基于LLM通用能力理解领域术语和意图；2）如何生成复杂代码；3）如何将大模型的概率性输出转化为确定性结果；实现有限表列空间内（200+）基于自然语言生成复杂查询语句高准确率低耗时（准确率>90%，E2E
-            平均 < 20s ）从而构建可信的BI竞争力。</li>
-    </ul>
-</li>
-<li><strong>项目二 – 大模型友好数据模型治理</strong>
-    <ul>
-        <li><strong>职责：</strong>担任系统工程师，负责技术洞察、规范制定及质量检视工具的设计实现。</li>
-        <li><strong>核心贡献：</strong>定义《公共开发部大模型友好数据模型设计规范》，涵盖33项质量规范；洞察、设计并实现33项规范自动化检视能力，基于大模型生成数据模型质量问题诊断与修改建议；从数据模型设计、编排、训练到运行态使用的全流程，建立大模型友好数据模型设计原则与规范体系，包含实体/属性/关系定义的正反例指导。
-        </li>
-        <li><strong>成果：</strong>发布产品线级数据模型规范，累计治理xxx、xxx、xxx三个子域、xxx、xxx、xxx等产品500+张逻辑数据模型（表）及10000+数据模型属性（字段），支撑智能问数、SPN故障诊断、北向智能体、网络优化智能体等下游智能化业务，智能体准确率平均提升40%。</li>
-        <li><strong>项目背景：</strong>基部分基于大模型的智能体应用（Agent）依赖对底层数据库的操作，使用自然语通过Agent和系统数据进行交互时，数据的消费者从人转变为LLM，现有元数据（数据模型）（属性/关系/表/列）定义不清晰，结构不明确，导致大模型无法准确操作和使用系统数据。为了使各产品的元数据（表/字段）对大模型友好，便于LLM/AI
-            Agent理解数据模型含义，准确选择和正确使用元数据，因此需要对元数据进行层级和语义的治理，并制定统一的LLM友好的规范，用于指导和规范各产品元数据的设计和治理。关键挑战：（1）量化定义LLM可理解的元数据形态；（2）落实到人可操作的规范中，并工具化。
-        </li>
-    </ul>
-</li>
-<li><strong>项目三 – AI辅助代码检视</strong>
-    <ul>
-        <li><strong>职责：</strong>参与AI Committer代码检视专家系统方案设计和技术决策。</li>
-        <li><strong>核心贡献：</strong>提出结合数据驱动（大模型）与知识驱动（形式化验证）的融合检视方案，聚焦高频、严重代码缺陷的自动化检视；通过MR关联分析自动生成代码检视意见，辅助Committer高效完成代码评审。
-        </li>
-        <li><strong>成果：</strong>AI
-            Committer能力上线Codehub、Sophie平台并融入生产MR流程，覆盖50类高频及严重代码共性缺陷；检视意见在R25C10版本中被采纳1832次，采纳率达80%+，占该版本总检视意见的6.8%（1832/27500）。
-        </li>
-        <li><strong>项目背景：随着大模型技术的兴起，AI技术在辅助研发领域的能力产生了质变。项目围绕AI辅助研发赛道聚焦问题定位场景和代码检视场景，探索AI
-                Committer代码检视专家，使能研发效率提升。关键挑战：如何在代码检视环节提前效拦截TOP严重和TOP频发的现网问题。</strong></li>
-    </ul>
-</li>
-<li><strong>项目四 – OpenFuyao（昇腾 NPU 生态）</strong>
-    <ul>
-        <li><strong>角色：</strong>NPU 大模型推理加速工具包联合负责人。</li>
-        <li><strong>贡献：</strong>设计并优化 NPU 感知算子库与内存调度策略；将工具包集成至主流大模型框架；在大规模部署场景下实现显著的推理延迟降低。</li>
-        <li><strong>影响力：</strong>华为昇腾计算生态核心贡献者，推动国产 AI 加速器上的大模型高效推理。</li>
-    </ul>
-</li>
 
-<li><strong>Project 1 – ChatBI (Trustworthy Intelligent Data Query &amp; Analytics Platform)</strong>
-    <ul>
-        <li><strong>Responsibilities:</strong> Led business requirement analysis and AI capability exploration for
-            ChatBI; oversaw solution design, core algorithm breakthroughs, and product release assurance.</li>
-        <li><strong>Key Contributions:</strong> Pioneered an intermediate representation (IR) based
-            generate-verify-iterate code generation paradigm with multi-dimensional validation and optimizer mechanisms,
-            converting probabilistic LLM outputs into deterministic results; designed a structured intent processing
-            pipeline encompassing intent verification &amp; clarification, rejection guidance, and query rewriting;
-            ensured deterministic generation through semantic-layer IR design, code-based table/column modeling, and
-            validator checks; built OmniGuard – a comprehensive test suite with 10,000+ high-quality test cases covering
-            full-table, full-column, value, and generalization scenarios, coupled with a five-tier hierarchical
-            evaluation system, enabling rapid iteration at 2,000+ test cases per day.</li>
-        <li><strong>Outcomes:</strong> Built ChatBI's intelligent querying and reporting capabilities from ground zero;
-            achieved 92% accuracy in the 2026.06 release testing across three xxx、xxx、xxx sub-domain products (xxx、xxx、xxx); enterprise campus xxx、xxx、xxx product achieved 90%+ accuracy
-            and was successfully commercially released.</li>
-    </ul>
-</li>
-<li><strong>Project 2 – LLM-Friendly Data Model Governance </strong>
-    <ul>
-        <li><strong>Responsibilities:</strong> Served as System Engineer, leading technology insight research,
-            specification definition, and quality inspection tool design &amp; implementation.</li>
-        <li><strong>Key Contributions:</strong> Defined the "LLM-Friendly Data Model Design Specification" for the
-            Public Development Department, covering 33 quality rules; designed and implemented automated inspection
-            capabilities for all 33 rules, leveraging LLMs to diagnose data model quality issues and provide actionable
-            recommendations; established a comprehensive set of design principles and specification systems for
-            LLM-friendly data models across the full lifecycle – from design, orchestration, and training to runtime
-            usage – including best-practice guidelines and positive/negative examples for entity, attribute, and
-            relationship definitions.</li>
-        <li><strong>Outcomes:</strong> Released a product-line-level data model specification; cumulatively governed
-            500+ logical data models (tables) and 10,000+ data model attributes (fields) across xxx、xxx、xxx's three
-            sub-domains, xxx、xxx、xxx products; drove an average 40% accuracy
-            improvement across downstream intelligent applications including ChatBI, SPN fault diagnosis, northbound
-            agent, and network optimization agent.</li>
-    </ul>
-</li>
-<li><strong>Project 3 – AI-Assisted Code Review (Venus 3.0)</strong>
-    <ul>
-        <li><strong>Responsibilities:</strong> Contributed to the design and technical decision-making of the AI
-            Committer code review expert system.</li>
-        <li><strong>Key Contributions:</strong> Proposed a hybrid review framework integrating data-driven (LLM) and
-            knowledge-driven (formal verification) approaches, focusing on automated detection of high-frequency and
-            critical code defects; enabled automatic generation of code review comments through MR association analysis
-            to assist committers in efficient code inspection.</li>
-        <li><strong>Outcomes:</strong> Deployed AI Committer capabilities on Codehub and Sophie platforms, integrated
-            into production MR workflows, covering 50 categories of high-frequency and critical code defect patterns;
-            review comments were adopted 1,832 times in the R25C10 release with an 80%+ adoption rate, accounting for
-            6.8% of total review comments (1,832/27,500) in that release.</li>
-    </ul>
-</li>
-<li><strong>Project 4 – OpenFuyao (Ascend NPU Ecosystem)</strong>
-    <ul>
-        <li><strong>Role:</strong> Co-lead of inference acceleration toolkit for LLMs on NPU.</li>
-        <li><strong>Contributions:</strong> Designed and optimized NPU‑aware operator libraries and memory scheduling;
-            integrated the toolkit with mainstream LLM frameworks; achieved significant latency reduction for
-            large‑scale deployment.</li>
-        <li><strong>Impact:</strong> Core contributor to Huawei’s Ascend computing ecosystem, enabling efficient LLM
-            inference on domestic AI accelerators.</li>
-    </ul>
-</li>
-	</ul>
-	<h2>专利发表（20篇）</h2>
-	<p class="sub">涵盖 DSL 验证、LLM 调优、容器化升级、KVCache 加速等方向</p>
-	<ul>
-        <li><span>92050816</span><span>一种基于DSL的形式化验证代码生成技术</span></li>
-        <li><span>92052439</span><span>一种基于transformer架构的设备日志分析和故障自修复技术</span></li>
-        <li><span>92052589</span><span>一种基于自然语言解析的设备配置和规则生成和校验技术</span></li>
-        <li><span>92056719</span><span>一种基于LLM的智能潜客数据模型挖掘和动态调优技术</span></li>
-        <li><span>92073078</span><span>一种云服务容器化场景下基于lisenerfd迁移的原地服务升级技术</span></li>
-        <li><span>92073110</span><span>一种容器化场景下基于CSI标准的服务小型化发布、部署和更新技术</span></li>
-        <li><span>92073848</span><span>一种基于LLM和图像生成大模型的拓扑图联动扩展技术</span></li>
-        <li><span>92075449</span><span>一种基于分层隐式神经网络的前端网页代码生成技术</span></li>
-        <li><span>92075753</span><span>一种算网存多域融合故障分析和定位技术</span></li>
-        <li><span>92102802</span><span>一种基于KVCache Endpoint批量聚合的推理集群优化方法</span></li>
-        <li><span>92103073</span><span>基于KVCache智能混合传输策略的分布式集群推理计算加速方法</span></li>
-        <li><span>92103239</span><span>一种基于智能AST蓝图生成的重构数据模型的方法</span></li>
-        <li><span>92103727</span><span>一种智能体自适应指令规则和验证器自动注册方法与系统</span></li>
-        <li><span>92121622</span><span>稀疏模式感知的KVCache匹配优化技术</span></li>
-        <li><span>92056122</span><span>一种基于先验知识注入的模型调优方法</span></li>
-        <li><span>92078409</span><span>一种多模态融合的算网存故障分析技术</span></li>
-        <li><span>92078074</span><span>一种高效的基于资源实时监控的负载均衡调度备份恢复方法</span></li>
-        <li><span>92082072</span><span>一种多集群快速对接和融合管理的装置</span></li>
-        <li><span>92102967</span><span>一种基于Client端热点缓存的推理服务加速方法</span></li>
-    </ul>
-
-<h1>Academic Activity</h1>
-	<h2>Publications</h2>
-	<ul>
-		<li>
-		<strong><a href="pdf/AdaptivityAnalysisPLDI2023.pdf">Program Analysis for Adaptive Data Analysis</a></strong> 
-		with Marco Gaboardi.  
-		<br> in <em>Proceedings of the 44th ACM SIGPLAN Conference on Programming Language Design and Implementation (PLDI 2023)</em>, Orlando, FL, USA.  
-		[<a href="pdf/AdaptivityAnalysisPLDI2023.pdf">PDF</a>] [<a href="https://github.com/jiawenliu/AdaptivityAnalysis">Github</a>]
-		</li>
-<!-- 		<li>
-		 <strong><a href="https://link.springer.com/chapter/10.1007/978-3-319-60033-8_36"> Pricing Privacy Leakage in Location-Based Services</a></strong> with Fenghua Li, Ben Niu, etc.
-		 <br> in International Conference on Wireless Algorithms, Systems, and Applications (WASA) 2017
-		 [<a href="pdf/2017WASA.pdf">PDF</a>]
-		</li> -->
-	</ul>
-
-	<h2>Patents</h2>
-	<ul>
-		<li>18 filed/published patents (as of 2026) in intelligent data analysis, LLM hallucination mitigation, code-based modeling, and NPU acceleration.</li>
-	</ul>
-
-	<h2>Drafts</h2>
-			<ul>
-				<li><a href="pdf/AdaptivityAnalysisPLDI2023-full.pdf">Program Analysis for Adaptive Data Analysis - Appendix</a> (extended version) Nov., 2022</li>
-				<li><a href="pdf/2020DP-FLPT.pdf">Verifying Differential Privacy in Floating-Point Computation</a> Nov., 2020</li>
-				<li><a href="pdf/2018BayesianArix.pdf">Tailoring Differentially Private Bayesian Inference to Distance Between Distributions</a> Oct., 2018</li>
-			</ul>
-
-	<h2>Talks/Posters</h2>
-			<ul>				
-				<li>Short talk -- Type System in Adaptive Data Analysis -- <a href="http://eglpls2019.cs.cornell.edu">EGLPLS</a> 2019 (in Cornell University in Ithaca, NY, USA)<a href="pdf/2019EGLPLS.pdf">[PDF]</a></li>
-				<li>Poster session -- Tailoring Differentially Private Bayesian Inference to Distance Between Distributions -- <a href="https://tpdp.cse.buffalo.edu/2018/">TPDP</a> of CCS 2018 (in Toronto, Canada)<a href="pdf/2018TPDP.pdf">[PDF]</a></li>				
-			</ul>
-
-	<h2>Events</h2>
-			<ul>
-				<li><a href = "https://popl23.sigplan.org"> POPL</a> Jan. 15-21, 2023 (in Boston, Massachusetts, United States)</li>
-				<li><a href = "https://nepls.org/Events/33/"> New England Programming Languages and Systems Symposium (NEPLS) </a> Sep. 29, 2022 (in Harvard, Boston, Massachusetts, United States)</li>
-				<li><a href = "https://popl22.sigplan.org"> POPL</a> Jan. 17-23, 2022 (in Philadelphia, Pennsylvania, United States)</li>
-				<li><a href = "https://popl22.sigplan.org/home/PLMW-2022">PLWM@POPL</a> Jan.18, 2021 (in Philadelphia, Pennsylvania, United States) </li>
-				<li><a href = "https://popl21.sigplan.org"> POPL</a> Jan. 16-21, 2021 (online)</li>
-				<li><a href="https://svd.csail.mit.edu/2019/">New England Systems Verification Day</a> Oct.18, 2019 (in MIT, MA, USA)</li>
-				<li><a href = "https://popl19.sigplan.org"> POPL</a> Jan. 13-19, 2019 (in Cascais, Portugal)</li>
-				<li><a href = "https://popl19.sigplan.org/track/PLMW-2019-papers">PLWM@POPL</a> Jan.14, 2019 (in Cascais, Portugal) </li>
-				<li><a href = "https://www.cs.uoregon.edu/research/summerschool/summer19/">OPLSS</a>-- Foundations of Probabilistic Programming and Security --  Jun 17 - 29, 2019 (in University of Oregon, OR, USA)</li>
-			</ul>
-
-	<h2>Teaching</h2>
-	<ul>
-		<li> Teaching Assistant for CS 320, Concepts of Programming Languages, 2019 Fall - Boston Univeristy <a href="https://www.bu.edu/academics/cas/courses/cas-cs-320/">course page</a> </li>
-		<li> Teaching Assistant for CSE 305, Introduction to Programming Languages, 2019 Spring - Univeristy at Buffalo <a href="https://catalog.buffalo.edu/courses/index.php?abbr=CSE&num=305">course page</a> </li>
-		<li> Teaching Assistant for CSE 305, Introduction to Programming Languages, 2018 Fall - Univeristy at Buffalo <a href="https://catalog.buffalo.edu/courses/index.php?abbr=CSE&num=305">course page</a> </li>
-		<li> Teaching Assistant for CSE 305, Introduction to Programming Languages, 2018 Spring - Univeristy at Buffalo <a href="https://catalog.buffalo.edu/courses/index.php?abbr=CSE&num=305">course page</a> </li>
-		<li> Teaching Assistant for CSE 542, Software Engineer Concept, 2017 Fall - Univeristy at Buffalo <a href="https://catalog.buffalo.edu/courses/index.php?abbr=CSE&num=305">course page</a> </li>			
-	</ul>
-
-<h1>Curriculum Vitae</h1>
-	<ul>
-		<li>June 2023 – present, <strong>Huawei Technologies Co., Ltd.</strong> (Level 18) – Lead Engineer/Architect (DataAgent & OpenFuyao).</li>
-		<li>September 2019 – May 2023, Ph.D. in Computer Science, Boston University. Advisor: <a href="https://www.bu.edu/cs/profiles/gaboardi/">Marco Gaboardi</a>. Thesis on program analysis for adaptive data analysis (PLDI 2023).</li>
-		<li>September 2017 – May 2019, Ph.D. student in Computer Science and Engineering, University at Buffalo, SUNY. Advisor: Marco Gaboardi.</li>
-		<li>September 2016 – June 2017, Intern, <a href="http://www.iie.ac.cn">Institute of Information Engineering</a>, Chinese Academy of Sciences.</li>
-		<li>September 2013 – June 2017, B.A. in Information Science, <a href="http://ie.cufe.edu.cn">Central University of Finance and Economics</a>, Beijing.</li>
-		<li>Born September 7, 1997 in China.</li>
-	</ul>
-
-<h1>Links</h1>
-	<ul>
-		<li><a href="https://github.com/jiawenliu">Github</a></li>
-		<li><a href="https://cs-people.bu.edu/jiawenl/">Previous site at Boston University</a></li>
-		<li><a href="https://www.acsu.buffalo.edu/~jliu223/">Previous site at University at Buffalo</a></li>
-		<li><a href="https://engineering.buffalo.edu/computer-science-engineering/people/phd-candidates.html">CSE, University at Buffalo</a></li>
-	</ul>
-
-<h1>Contacts</h1>
-	<ul>
-		<li>jiawenl [at] bu.edu</li>
-		<li>+86 19200349925</li>
-	</ul>
-
-<h1>Research Thinks</h1>
-	<ul>
-		<li>Programming Language and Type Systems</li>
-		<li>Formal Verifications</li>
-		<li>Trustworthy AI & LLM Hallucination Mitigation</li>
-	</ul>
-
-</div>
-<div id="footer">
-</div>
-</div>
+<script>
+  // 打印前展开所有折叠内容
+  window.addEventListener('beforeprint', function(){
+    document.querySelectorAll('details').forEach(function(d){ d.open = true; });
+  });
+  // 展开/收起英文版
+  function toggleEN(){
+    var en = document.querySelector('details.en-block');
+    en.open = !en.open;
+  }
+  // 高亮当前导航
+  var links = document.querySelectorAll('.toc a');
+  window.addEventListener('scroll', function(){
+    var pos = window.scrollY + 120;
+    links.forEach(function(a){
+      var sec = document.querySelector(a.getAttribute('href'));
+      if(sec && sec.offsetTop <= pos && sec.offsetTop + sec.offsetHeight > pos){
+        links.forEach(function(x){ x.classList.remove('active'); });
+        a.classList.add('active');
+      }
+    });
+  });
+</script>
 </body>
 </html>
